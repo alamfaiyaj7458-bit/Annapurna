@@ -1,12 +1,12 @@
 require('dotenv').config();
-
+const cors = require("cors");
 const REQUIRED_ENV = ['MONGODB_URI', 'JWT_SECRET', 'CLOUDINARY_CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET'];
 const missing = REQUIRED_ENV.filter((k) => !process.env[k]);
 if (missing.length) {
   console.error(`Missing required environment variables: ${missing.join(', ')}`);
   process.exit(1);
 }
-
+app.use(cors());
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
