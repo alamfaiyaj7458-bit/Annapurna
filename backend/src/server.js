@@ -1,15 +1,24 @@
 require('dotenv').config();
 
-const REQUIRED_ENV = ['MONGODB_URI', 'JWT_SECRET', 'CLOUDINARY_CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET'];
+// Check required env variables
+const REQUIRED_ENV = [
+'MONGODB_URI',
+'JWT_SECRET',
+'CLOUDINARY_CLOUD_NAME',
+'CLOUDINARY_API_KEY',
+'CLOUDINARY_API_SECRET'
+];
+
 const missing = REQUIRED_ENV.filter((k) => !process.env[k]);
 if (missing.length) {
-  console.error(`Missing required environment variables: ${missing.join(', ')}`);
-  process.exit(1);
+console.error(`Missing required environment variables: ${missing.join(', ')}`);
+process.exit(1);
 }
 
 const express = require('express');
-
+const cors = require('cors');
 const helmet = require('helmet');
+
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
@@ -19,41 +28,30 @@ const { generalRateLimiter } = require('./middleware/rateLimiter');
 
 const app = express();
 
-// Connect to DB and seed admin
+// Connect DB
 connectDB().then(() => seedAdmin());
 
 // Security headers
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
-const cors = require("cors");
-// CORS
-const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:5173')
-  .split(',')
-  .map((o) => o.trim());
-app.use(cors());
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      const allowedOrigins = [
-        "https://annapurna-five.vercel.app",
-      ];
 
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
+// ✅ FIXED CORS (ONLY ONCE, CORRECT)
+app.use(
+cors({
+origin: ['https://annapurna-five.vercel.app'],
+credentials: true,
+})
 );
+
 // Body parsing
 app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 
 // Health check
-app.get('/health', (req, res) => res.json({ status: 'OK', timestamp: new Date() }));
+app.get('/health', (req, res) =>
+res.json({ status: 'OK', timestamp: new Date() })
+);
 
-// General rate limiting
+// Rate limiting
 app.use('/api', generalRateLimiter);
 
 // Routes
@@ -64,7 +62,11 @@ app.use('/api/products', productRoutes);
 app.use(notFound);
 app.use(errorHandler);
 
+// Start server
 const PORT = process.env.PORT || 5001;
+
 app.listen(PORT, () => {
-  console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+console.log(
+`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`
+);
 });
