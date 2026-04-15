@@ -6,7 +6,7 @@ if (missing.length) {
   console.error(`Missing required environment variables: ${missing.join(', ')}`);
   process.exit(1);
 }
-app.use(cors());
+
 const express = require('express');
 
 const helmet = require('helmet');
@@ -29,7 +29,7 @@ app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 const allowedOrigins = (process.env.ALLOWED_ORIGINS || 'http://localhost:5173')
   .split(',')
   .map((o) => o.trim());
-
+app.use(cors());
 app.use(
   cors({
     origin: (origin, callback) => {
