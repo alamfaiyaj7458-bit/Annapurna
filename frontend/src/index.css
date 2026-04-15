@@ -1,0 +1,173 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-gold: #c9a84c;
+    --color-gold-light: #e2c97e;
+    --color-gold-dark: #8a6820;
+    --color-stone-dark: #1c1917;
+    --color-stone-mid: #44403c;
+    --color-cream: #f9f6f0;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: #0c0a09;
+    color: #f5f5f4;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-gold);
+    color: #0c0a09;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #1c1917;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-gold-dark);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-gold);
+  }
+}
+
+@layer components {
+  .btn-gold {
+    @apply inline-flex items-center gap-2 px-7 py-3 bg-transparent border border-gold-500 text-gold-500 font-body font-medium tracking-widest text-sm uppercase transition-all duration-300 hover:bg-gold-500 hover:text-stone-950 hover:shadow-lg hover:shadow-gold-500/20;
+  }
+
+  .btn-gold-solid {
+    @apply inline-flex items-center gap-2 px-7 py-3 bg-gold-500 text-stone-950 font-body font-medium tracking-widest text-sm uppercase transition-all duration-300 hover:bg-gold-400 hover:shadow-lg hover:shadow-gold-500/30;
+  }
+
+  .section-label {
+    @apply font-accent text-gold-500 tracking-[0.3em] text-xs uppercase;
+  }
+
+  .section-title {
+    @apply font-display text-4xl md:text-5xl lg:text-6xl font-light text-stone-100 leading-tight;
+  }
+
+  .card-glass {
+    @apply bg-stone-900/60 backdrop-blur-sm border border-stone-700/40;
+  }
+
+  .gold-divider {
+    @apply w-16 h-px bg-gradient-to-r from-transparent via-gold-500 to-transparent;
+  }
+
+  .input-field {
+    @apply w-full bg-stone-900 border border-stone-700 text-stone-100 px-4 py-3 text-sm font-body focus:outline-none focus:border-gold-500 transition-colors duration-200 placeholder-stone-500;
+  }
+
+  .select-field {
+    @apply w-full bg-stone-900 border border-stone-700 text-stone-100 px-4 py-3 text-sm font-body focus:outline-none focus:border-gold-500 transition-colors duration-200 appearance-none;
+  }
+
+  .textarea-field {
+    @apply w-full bg-stone-900 border border-stone-700 text-stone-100 px-4 py-3 text-sm font-body focus:outline-none focus:border-gold-500 transition-colors duration-200 placeholder-stone-500 resize-none;
+  }
+}
+
+@layer utilities {
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #e2c97e 0%, #c9a84c 50%, #8a6820 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* Lightbox overlay */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 10, 9, 0.96);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+/* Floating Action Buttons */
+.fab-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-end;
+}
+
+.fab-btn {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+}
+
+.fab-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 28px rgba(0,0,0,0.5);
+}
+
+/* Masonry grid */
+.masonry-grid {
+  columns: 2;
+  column-gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .masonry-grid { columns: 3; }
+}
+
+@media (min-width: 1024px) {
+  .masonry-grid { columns: 4; }
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 0.75rem;
+}
+
+/* Skeleton pulse */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.skeleton {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+  background: #292524;
+  border-radius: 2px;
+}
