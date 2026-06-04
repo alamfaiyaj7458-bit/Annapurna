@@ -37,7 +37,7 @@ app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 // ✅ FIXED CORS (ONLY ONCE, CORRECT)
 app.use(
 cors({
-origin: ['https://annapurna-five.vercel.app'],
+origin: ['https://annapurna1.vercel.app'],
 credentials: true,
 })
 );
